@@ -189,8 +189,12 @@ bool UBLOX_AT_CellularContext::activate_profile(const char *apn,
                 _at.resp_stop();
 
                 if (_at.get_last_error() == NSAPI_ERROR_OK) {
-                    // Activate, wait upto 30 seconds for the connection to be made
-                    _at.set_at_timeout(30000);
+                    // Activate, wait upto 3 minutes for the connection to be made
+                    // B.4 Estimated command response time
+                    // ...
+                    // Network commands      Up to 3 min      +CGATT, +CGDATA, +COPS,
+                    // +UCGOPS, +UCSDA, +UPSDA
+                    _at.set_at_timeout(180000);
                     _at.cmd_start("AT+UPSDA=0,3");
                     _at.cmd_stop();
                     _at.resp_start();
